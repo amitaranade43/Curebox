@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Patient's Page</h1>
+<h1 class="title">
+  Welcome {{ current_user.name}}
+</h1>
+
+<div class="container">
+	<div class="row">
+		<div class="col-8">
+
+      <strong>Username:</strong>
+      {{ current_user.name}}<br/>
+      
+      
+      <strong>Email:</strong>
+      {{ current_user.email }}<br/>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
