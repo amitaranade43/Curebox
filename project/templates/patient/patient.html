@@ -1,0 +1,42 @@
+{% extends "main/base.html" %}
+   
+{% block content %}
+<h1 class="title">
+Welcome {{ name}}
+</h1>
+<h1>Not feeling well ? Don't worry , We've got you...</h1>
+<h1>Search through our list of specialized doctors for your cure, specially created for you :) </h1>
+
+<div class="container">
+  <div class="search-container">
+    <form action="/action_page.php">
+      <input type="text" placeholder="Search.." name="search">
+      <button type="submit">Search</button>
+    </form>
+  </div>
+<div class="row has-text-centered">
+  <div class="col-8">
+    <table class="styled-table"> 
+      <thead> 
+      <tr> 
+          <th>ID</th> 
+          <th>Name</th>
+      </tr> 
+      </thead> 
+      <tbody> 
+          {% for doctor in doctors %}  
+              <tr> 
+                  <td>{{ doctor[0] }}</td> 
+                  <td>{{ doctor[1] }}</td>  
+              </tr> 
+          {% endfor %} 
+      </tbody> 
+  </table> 
+
+    <!--a href="/updateProfile/">Update Profile</a-->
+
+  </div>
+</div>
+</div>
+{% endblock %}
+      

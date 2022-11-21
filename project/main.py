@@ -11,52 +11,6 @@ def index():
 
 
 
-@main.route('/updatepatient')
-@login_required
-def updatepatient():
-    return render_template('update_patient.html', name=current_user.name)
-
-
-@main.route('/updatepatient',methods=['POST'])
-@login_required
-def updatepatient_post():
-    #code to insert patient details into database
-    firstname = request.form.get('firstname')
-    lastname = request.form.get('lastname')
-    age = request.form.get('age')
-    gender = request.form.get('gender')
-    weight = request.form.get('weight')
-    height = request.form.get('height')
-    currentillness = request.form.get('currentillness')
-    pastillness = request.form.get('pastillness')
-
-    Patient_profile = Patient(firstname=firstname, lastname=lastname, age=age, gender= gender, weight=weight, height=height, currentillness= currentillness, pastillness= pastillness) 
-
-    db.session.add(Patient_profile)
-    db.session.commit
-
-    return render_template('patient.html', current_user=current_user)
-
-
-
-
-
-@main.route('/doctor/')
-@login_required
-def doctor():
-    return render_template('doctor.html', current_user=current_user)
-
-@main.route('/patient/')
-@login_required
-def patient():
-    return render_template('patient.html', current_user=current_user)
-
-@main.route('/insuranceProvider')
-@login_required
-def insuranceProvider():
-    return render_template('insuranceProviders.html', current_user=current_user)
-
-
 # @main.route('/updateProfile/')
 # @login_required
 # def account_dets_patient():
