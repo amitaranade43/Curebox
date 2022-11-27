@@ -15,10 +15,10 @@ login_manager.login_message_category = 'info'
 
 def create_app():
     app = Flask(__name__)
-    db.init_app(app)
-    mail.init_app(app)
     app.config['SECRET_KEY'] = 'root'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Jonsnow1310*@localhost:5432/PatientInsuranceManagement'
+    db.init_app(app)
+    mail.init_app(app)
     # app.config['MAIL_SERVER'] = 'smtp.gmail.com'
     # app.config['MAIL_PORT'] = 465
     # app.config['MAIL_USE_SSL'] = True
@@ -59,6 +59,8 @@ def create_app():
     from project.insuranceProvider.insuranceProviderUtility import insuranceProviderUtility as insuranceProviderUtility_blueprint
     app.register_blueprint(insuranceProviderUtility_blueprint)
 
+    from project.common.commonUtility import commonUtility as commonUtility_blueprint
+    app.register_blueprint(commonUtility_blueprint)
 
     #from project import db, create_app, models
     with app.app_context():

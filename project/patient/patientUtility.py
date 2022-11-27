@@ -1,7 +1,7 @@
-from flask import Blueprint, redirect,render_template,request, url_for
+from flask import Blueprint, redirect,render_template,request
 from flask_login import login_required, current_user
 from project import db
-from project.models import Patient, PatientHistory
+from project.models import Patient
 
 patientUtility = Blueprint('patientUtility', __name__)
 
@@ -40,4 +40,6 @@ def updatepatient_post():
 @login_required
 def patient():
     records = db.engine.execute("select d.fees , u.name from doctor d natural join curebox_user u ;")
-    return render_template('patient/patient.html', name=current_user.name, doctors = records)
+    diseases = db.engine.execute("select name from disease;")
+    locations = db.engine.execute("select distinct h.location from hospital h join doctor d on h.id = d.hospital_id order by 1")
+    return render_template('patient/patient.html', name=current_user.name, doctors = records ,diseases = diseases, locations = locations)
