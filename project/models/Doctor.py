@@ -6,3 +6,6 @@ class Doctor(db.Model):
     hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.id'))
     fees = db.Column(db.Integer)
     provide_covid_care = db.Column(db.Boolean)
+    name = db.Column(db.String(255))
+    # doctorAvailability = db.relationship('DoctorAvailability', backref='doctor')
+    booking = db.relationship('Booking', backref='doctor')

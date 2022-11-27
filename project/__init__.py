@@ -15,8 +15,10 @@ login_manager.login_message_category = 'info'
 
 def create_app():
     app = Flask(__name__)
+    UPLOAD_FOLDER = 'project/static/images/'
     app.config['SECRET_KEY'] = 'root'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Jonsnow1310*@localhost:5432/PatientInsuranceManagement'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:deva@localhost:5432/PatientInsuranceManagement'
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     db.init_app(app)
     mail.init_app(app)
     # app.config['MAIL_SERVER'] = 'smtp.gmail.com'
