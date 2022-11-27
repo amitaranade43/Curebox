@@ -19,7 +19,6 @@ def create_app():
     app.config['SECRET_KEY'] = 'root'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:deva@localhost:5432/PatientInsuranceManagement'
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-    
     db.init_app(app)
     mail.init_app(app)
     # app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -62,6 +61,8 @@ def create_app():
     from project.insuranceProvider.insuranceProviderUtility import insuranceProviderUtility as insuranceProviderUtility_blueprint
     app.register_blueprint(insuranceProviderUtility_blueprint)
 
+    from project.common.commonUtility import commonUtility as commonUtility_blueprint
+    app.register_blueprint(commonUtility_blueprint)
 
     #from project import db, create_app, models
     with app.app_context():

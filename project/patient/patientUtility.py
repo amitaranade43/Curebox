@@ -1,3 +1,7 @@
+from flask import Blueprint, redirect,render_template,request
+from flask_login import login_required, current_user
+from project import db
+from project.models import Patient
 from flask import Blueprint, redirect,render_template,request, url_for, flash, send_file, current_app
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_required, current_user
@@ -10,7 +14,6 @@ from io import BytesIO
 from werkzeug.utils import secure_filename
 import uuid as uuid
 import os
-
 
 
 patientUtility = Blueprint('patientUtility', __name__)
@@ -91,7 +94,13 @@ def patient():
 
 @patientUtility.route('/bookAppointment/')
 @login_required
-def book_appointment():
+def patient():
+    records = db.engine.execute("select d.fees , u.name from doctor d natural join curebox_user u ;")
+    diseases = db.engine.execute("select name from disease;")
+    locations = db.engine.execute("select distinct h.location from hospital h join doctor d on h.id = d.hospital_id order by 1")
+    return render_template('patient/patient.html', name=current_user.name, doctors = records ,diseases = diseases, locations = locations)
+
+  def book_appointment():
     doctors = Doctor.query.all()
     for doc in doctors:
         print(doc.name)

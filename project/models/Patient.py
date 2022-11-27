@@ -2,7 +2,7 @@ from project import db
 
 class Patient(db.Model):
     __tablename__ = 'patient'
-    id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    id = db.Column(db.Integer, db.ForeignKey('curebox_user.id'), primary_key=True)
     firstname = db.Column(db.String(255))
     lastname = db.Column(db.String(255))
     email = db.Column(db.String(255))
