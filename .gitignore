@@ -26,3 +26,5 @@ htmlcov/
 
 
 *.zip
+*/.DS_Store
+*/*.pyc
