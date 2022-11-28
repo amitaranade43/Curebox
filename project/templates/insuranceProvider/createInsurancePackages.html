@@ -1,0 +1,61 @@
+{% extends "main/base.html" %}
+{% block content %}
+<h1 class="title">
+    Create an Insurance Package
+</h1>
+<div class="box">
+<form method="POST" action="/createInsurancePackage">
+    <form method="POST" action="/createInsurancePackage">
+            <div class="container rounded bg-white mt-5 mb-5">
+                <div class="row">
+                    <div class="col-md-5 border-right">
+                            <div class="field">
+                                <div class="control">
+                                    <label for="fname">Insurance Package Name</label>
+                                    <input class = "input is-small" type = "text" id = "package_name" name="package_name" placeholder="Enter the insurance package name" autofocus="">
+
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="control">
+                                    <label for="lname"> Insurance Package Description</label>
+                                    <input class="input is-small" type = "text" id="package_description" name="package_description" placeholder="Enter a short description on the insurance package" autofocus="">
+
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                    <label for="age">Age</label>
+                                    <select id ="age" name="age">
+                                        <option value="20-30">20-30</option>
+                                        <option value="30-40">30-40</option>
+                                        <option value="40-50">40-50</option>
+                                        <option value="50-60">50-60</option>
+                                      </select>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                    <label for="insurance_duration"> Duration of the Insurance Package </label>
+                                    <input class="input is-small" type="text" id="insurance_duration" name="insurance_duration" placeholder="Enter the duration of the insurance package" autofocus="">
+
+                                </div>
+                            </div>
+                            <div class="field">
+                              <div class="control">
+                                  <label for="age">Price of the Insurance Package</label>
+                                  <input class="input is-small" type="text" id="price" name="price" placeholder="Enter the price of the insurance package" autofocus="">
+                              </div>
+                          </div>
+                            <button class="button is-block is-info is-large is-fullwidth">Create Package</button>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            </div>
+            </div>
+    </form>
+</div>
+{% endblock %}

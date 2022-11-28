@@ -1,6 +1,6 @@
 
 ---------- Populate Doctor entries start -------------------
-delete from doctor 
+/*delete from doctor 
 insert into doctor(id,hospital_id,fees,provide_covid_care) values ('2',1,20,TRUE);
 insert into doctor(id,hospital_id,fees,provide_covid_care) values ('3',1,40,FALSE);
 insert into doctor(id,hospital_id,fees,provide_covid_care) values ('4',2,60,TRUE);
@@ -123,4 +123,4 @@ select distinct doc.fees , u.name
 from doctor_disease dd natural join doctor doc natural join curebox_user u , hospital h 
 where 1 = 1 and dd.doctor_id = doc.id 
 and dd.disease_id = (select disease_id from disease d where d.name = 'Colds and Flu')
-and doc.hospital_id = h.id and h.location = 'Bloomington'
+and doc.hospital_id = h.id and h.location = 'Bloomington'*/

@@ -63,7 +63,7 @@ def login_post():
     password = request.form.get('password')
     # role = request.form.get('roles')
     remember = True if request.form.get('remember') else False
-
+    print('SE project')
     user = User.query.filter_by(email=email).first()
 
     # check if the user actually exists

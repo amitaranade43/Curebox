@@ -49,10 +49,10 @@ def getQuery(searchquery,disease,covid_care,location):
         # print('disease is ',disease)
         # print('covid_care is ',covid_care)
         # print('location is ',location)
-        query = "select distinct u.name , h.location , doc.fees  from doctor_disease dd natural join doctor doc natural join curebox_user u , hospital h "
+        query = "select distinct u.first_name ,u.last_name, h.location , doc.fees  from doctor_disease dd natural join doctor doc natural join public.user u , hospital h "
         queryCondition = "where 1 = 1 and doc.hospital_id = h.id "
         if(len(searchquery) > 0):
-           queryCondition += " and UPPER(u.name) like UPPER('" + searchquery + "')";
+           queryCondition += " and UPPER(u.first_name) like UPPER('" + searchquery + "')";
         if(disease != 'select'):
            queryCondition += " and dd.doctor_id = doc.id and dd.disease_id = (select d.id from disease d where d.name = '" + disease + "')";    
         covid_care_boolVal = False

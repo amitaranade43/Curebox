@@ -8,6 +8,6 @@ from project.models.DoctorDisease import DoctorDisease
 from project.models.Booking import Booking
 from project.models.Doctor import Doctor
 from project.models.Hospital import Hospital
-
+from project.models.InsuranceProvider import InsuranceProvider
 
 
