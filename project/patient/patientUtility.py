@@ -87,11 +87,16 @@ def updatepatient_post():
 @patientUtility.route('/patient')
 @login_required
 def patient():
-    records = db.engine.execute("select d.fees , u.name from doctor d natural join curebox_user u ;")
+    print('Currently in patient')
+    records = db.engine.execute("select d.fees , u.first_name,u.last_name from doctor d natural join public.user u ;")
+    print(records)
+    print('After records')
     diseases = db.engine.execute("select name from disease;")
     locations = db.engine.execute("select distinct h.location from hospital h join doctor d on h.id = d.hospital_id order by 1")
-    return render_template('patient/patient.html', name=current_user.name, doctors = records ,diseases = diseases, locations = locations)
+    return render_template('patient/patient.html', name='patient', doctors = records ,diseases = diseases, locations = locations)
 
+@patientUtility.route('/bookAppointment/')
+@login_required
 def book_appointment():
     doctors = Doctor.query.all()
     for doc in doctors:

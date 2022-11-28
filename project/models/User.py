@@ -3,7 +3,8 @@ from project import db
 
 
 class User(UserMixin,db.Model):
-    __tablename__ = 'curebox_user'
+    __tablename__ = 'user'
+    #curebox_user
     id = db.Column(db.Integer, primary_key=True) # primary keys are required by SQLAlchemy
     #username = db.Column(db.String(255), unique=True)
     password = db.Column(db.String(255))

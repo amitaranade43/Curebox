@@ -3,6 +3,34 @@
 {% block content %}
 <h1>Insurance Provider Page</h1>
 <h1 class="title">
-  Welcome, Insurance Provider {{ name }}
+  Welcome
 </h1>
+  <div class="row has-text-centered">
+    <div class="col-8">
+      <style>
+        table, th, td {
+          border:1px solid black;
+        }
+        </style>
+      <table class="styled-table"> 
+        <tbody> 
+          <tr>
+            <th>Package Name</th>
+            <th>Package Description</th>
+            <th>Insurance Duration</th>
+            <th>Age</th>
+            <th>Price</th>
+          </tr>
+            {% for package in packages%}  
+                <tr> 
+                    <th>{{ package.package_name }}</th> 
+                    <th>{{ package.package_description }}</th> 
+                    <th>{{ package.insurance_duration }}</th> 
+                    <th>{{ package.age }}</th>  
+                    <th>{{ package.price }}</th>  
+                </tr> 
+            {% endfor %} 
+        </tbody> 
+        
+      
 {% endblock %}

@@ -34,7 +34,9 @@
                             <a href="{{ url_for('patientUtility.bookAppointment') }}" class="navbar-item">
                                 Book Appointment
                             </a>
-
+                            <a href="{{ url_for('insuranceProviderUtility.insuranceProviderForPatient') }}" class="navbar-item">
+                                Insurance Packages
+                            </a>
                             {% endif %}
                             {% if (current_user.is_authenticated  and name == 'doctor') %}
                             <a href="{{ url_for('doctorUtility.doctor') }}" class="navbar-item">
@@ -42,12 +44,12 @@
                             </a>
                             {% endif %}
 
-                            {% if (current_user.is_authenticated  and name == 'insuranceprovider') %}
-                            <!-- <a href="{{ url_for('doctorUtility.doctor') }}" class="navbar-item">
-                                Profile
-                            </a> -->
+                            {% if (current_user.is_authenticated  and Name == "insuranceProvider") %}
                             <a href="{{ url_for('insuranceProviderUtility.insuranceProvider') }}" class="navbar-item">
-                                Insurance Packages
+                                Your Existing Packages
+                            </a>
+                            <a href="{{ url_for('insuranceProviderUtility.createInsurancePackage') }}" class="navbar-item">
+                                Create Package
                             </a>
                             {% endif %}
 
