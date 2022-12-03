@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect,render_template,request, url_for
 from flask_login import login_required, current_user
 from project import db
-from project.models import InsuranceProvider
+from project.models import InsuranceProvider, Patient
 
 insuranceProviderUtility = Blueprint('insuranceProviderUtility', __name__)
 
@@ -10,7 +10,6 @@ insuranceProviderUtility = Blueprint('insuranceProviderUtility', __name__)
 @login_required
 def insuranceProvider():
     records = InsuranceProvider.query.all()
-    print(records)
     return render_template('insuranceProvider/insuranceProviders.html', Name = "insuranceProvider", packages = records )
 
 @insuranceProviderUtility.route('/insuranceProviderForPatient')
@@ -37,3 +36,18 @@ def createInsurancePackage_post():
     db.session.commit()
     records_create = InsuranceProvider.query.all()
     return render_template('insuranceProvider/insuranceProviders.html', current_user=current_user, Name = "insuranceProvider", packages = records_create)
+
+@insuranceProviderUtility.route('/suggestInsurance/<string:token>', methods=['get'])
+@login_required
+def suggestInsurance(token):
+    low = int(token.split('-')[0])
+    high = int(token.split('-')[1])
+    print(type(low),high)
+    str_cmd = "select * from patient where cast(age as int) between "+str(low)+" and "+str(high)+";"
+    records_suggest = db.engine.execute(str_cmd).fetchall()
+    print(records_suggest)
+    print("names which are suggested",records_suggest)
+    return render_template('insuranceProvider/suggestInsurance.html', current_user=current_user, Name = "insuranceProvider", suggestedNames = records_suggest)
+
+
+

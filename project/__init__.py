@@ -21,12 +21,15 @@ def create_app():
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     db.init_app(app)
     mail.init_app(app)
+    app.config['SECRET_KEY'] = 'root'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1234@localhost:5432/test'
     # app.config['MAIL_SERVER'] = 'smtp.gmail.com'
     # app.config['MAIL_PORT'] = 465
     # app.config['MAIL_USE_SSL'] = True
     # app.config['MAIL_USERNAME'] = "carebox28@gmail.com"
     # app.config['MAIL_PASSWORD'] = "fbovsoxuziblozxy"
     # mail = Mail(app)
+    db.init_app(app)
     login_manager.init_app(app)
     login_manager.session_protection = "strong"
 
@@ -68,6 +71,6 @@ def create_app():
     with app.app_context():
         db.create_all()
         db.session.commit()
-        
+
 
     return app
