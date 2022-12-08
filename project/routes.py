@@ -25,7 +25,7 @@ def signup_post():
         firstname = request.form.get('firstname')
         lastname = request.form.get('lastname')
         password = request.form.get('password')
-        confirm_password = request.form.get('password1')
+        confirm_password = request.form.get('password')
         role = request.form.get('roles')
         print(role)
         role = Role.query.filter_by(rolename=role).first()
