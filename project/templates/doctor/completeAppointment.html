@@ -5,7 +5,7 @@
     Appointment Details
 </h1>
 <div class="box">
-<form method="POST" action="{{ url_for('doctorUtility.markAsCompleteAppointment',patientId = {{ patient.id }}, _external=True)}}", enctype="multipart/form-data">        
+<form method="POST" action="{{ url_for('doctorUtility.markAsCompleteAppointment',patientId =  patient.id , _external=True)}}", enctype="multipart/form-data">        
             <div class="container rounded bg-white mt-5 mb-5">
 
                 <div class="row">

@@ -250,18 +250,19 @@
     <a href="#" class="logo"> <i class="fas fa-heartbeat"></i> CureBox </a>
 
     <nav class="navbar">
+    
         {% if (current_user.is_authenticated  and name == 'patient') %}
-        <a href="{{ url_for('patientUtility.patient') }}" class="navbar-item">
-            Home
-        </a>
+       <a href="{{ url_for('patientUtility.patient') }}" class="navbar-item">
+          Home
+       </a>
         <a href="{{ url_for('patientUtility.updatepatient') }}" class="navbar-item">
             Profile
         </a>
         <a href="{{ url_for('patientUtility.InsurancePackage') }}" class="navbar-item">
             Insurance Packages
         </a>
-        <a href="{{ url_for('patientUtility.bookAppointment')}}" class="navbar-item">
-            Book Appointment
+        <a href="{{ url_for('patientUtility.viewAppointments') }}" class="navbar-item">
+            My Appointments
         </a>
   
         {% endif %}

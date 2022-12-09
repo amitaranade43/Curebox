@@ -35,12 +35,11 @@ def createInsurancePackage_post():
     i_duration = request.form.get('insurance_duration')
     pr = request.form.get('price')
     a = request.form.get('age')
-    value= User.query.filter_by(email=current_user.email).first()
     # Insurance_Package = InsuranceProvider(package_name = p_name, package_description = p_description, insurance_duration = i_duration, price= pr, age = a) 
     Insurance_details = InsuranceProvider(package_name=p_name,package_description=p_description,insurance_duration=i_duration,age=a,price=pr)
     db.session.add(Insurance_details)
     db.session.commit()
-    return render_template('insuranceProvider/insuranceProviders.html', current_user=current_user, name = "insuranceProvider", packages = records_create)
+    return redirect(url_for('insuranceProviderUtility.insuranceProvider'))
 
 @insuranceProviderUtility.route('/suggestInsurance/<string:token>/<string:insurance_id>', methods=['get'])
 @login_required
@@ -58,11 +57,11 @@ def suggestInsurance(token,insurance_id):
         flash('No Patient in the age range')
         return redirect(url_for('insuranceProviderUtility.insuranceProvider'))
 
-@insuranceProviderUtility.route('/suggestInsurancePatient/<string:token>/<string:insurance_id>', methods=['get'])
+@insuranceProviderUtility.route('/suggestInsurancePatient/<string:token>/<string:insurancePack>', methods=['get'])
 @login_required
-def suggestInsurancePatient(token,insurance_id):
+def suggestInsurancePatient(token,insurancePack):
     print(token)
-    insur_id = insurance_id
+    insur_id = insurancePack
     update_details = Patient.query.filter_by(id = token).first()
     update_details.insurance_package = insur_id
     db.session.commit()

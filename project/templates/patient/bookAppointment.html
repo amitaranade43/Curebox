@@ -63,12 +63,12 @@
             
             <ul id="toggle1" style="display:none;">
               <!-- <label for="recipient-name" class="col-form-label" style="color: rgb(15, 15, 1);text-align: left;">Select timeslot</label> -->
-                <select name="booked_slots">
+                <select name="booked_slots" style ="border: solid;">
                   {% for option in booked_slots %}
                   <option value="{{ option }}">{{ option }}</option>
                   {% endfor %}
               </select> 
-              <button type="submit">Book Appointment</button>
+              <button type="submit" style="background-color: aliceblue;">Book Appointment</button>
              </ul>
            
             
@@ -87,13 +87,8 @@
 {% block script %}
 <script>
 $(document).ready(function(){
-  console.log("window is loaded")
-  $("#exampleModal").modal("show");
-  var x = Date.now();
-  print('Hey Amita',' ',x)
-  document.getElementById("myDate").min = Date.now();
- 
- 
+  console.log("window is loaded");
+  $("#exampleModal").modal("show"); 
 })
 
 function flashMessage(){

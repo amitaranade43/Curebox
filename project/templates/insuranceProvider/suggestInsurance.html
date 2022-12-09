@@ -338,7 +338,7 @@
       <div class="col-8">
         <strong> </strong>
         {{ record[1]}} {{ record[2] }}<br/>
-        <form action="{{ url_for('insuranceProviderUtility.suggestInsurancePatient', token = record[0], isurancePack=current_user.id, _external=True)}}", method="get"> 
+        <form action="{{ url_for('insuranceProviderUtility.suggestInsurancePatient', token = record[0], insurancePack=insurance_id, _external=True)}}", method="get"> 
             <button>Suggest this Patient</button>
         </form>
   {% endfor %} 
