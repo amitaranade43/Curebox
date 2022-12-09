@@ -7,7 +7,8 @@ class Doctor(db.Model):
     fees = db.Column(db.Integer)
     provide_covid_care = db.Column(db.Boolean)
     profile_pic = db.Column(db.String)
+    rating = db.Column(db.Integer)
+
     #name = db.Column(db.String(255))
     # doctorAvailability = db.relationship('DoctorAvailability', backref='doctor')
     booking = db.relationship('Booking', backref='doctor')
-    

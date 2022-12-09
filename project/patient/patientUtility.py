@@ -1,4 +1,5 @@
-from flask import Blueprint, redirect,render_template,request,flash
+from datetime import datetime
+from flask import Blueprint, redirect,render_template,request
 from flask_login import login_required, current_user
 from project import db
 from project.models import Patient, InsuranceProvider
@@ -82,6 +83,51 @@ def updatepatient_post():
 #     records = db.engine.execute("select d.fees , u.name from doctor d natural join curebox_user u ;")
 #     return render_template('patient/patient.html', name=current_user.name, doctors = records)
 
+
+
+@patientUtility.route('/viewAppointments')
+@login_required
+def viewAppointments():
+    # currentApt = Booking.query.filter_by(patient_id=current_user.id,status='OPEN')
+    # pastApt = Booking.query.filter_by(patient_id=current_user.id,status='COMPLETE')
+    # doctorsList = []
+    # for apt in currentApt:
+    #     doctorsList.append(apt.doctor_id)
+
+    # Doctor.query.filter_by()
+    queryStr1 = "select u.first_name,u.last_name,b.date,b.fees,b.start_time :: timestamp :: time,b.end_time :: timestamp :: time,b.doctor_id,b.booking_id from booking b join public.user u on b.doctor_id = u.id where b.patient_id = "+ str(current_user.id)+" and b.status='OPEN'"
+    currentApt = db.engine.execute(queryStr1)
+    queryStr2 = "select u.first_name,u.last_name,b.date,b.fees,b.start_time :: timestamp :: time,b.end_time :: timestamp :: time,b.booking_id,b.rating,b.feedback,b.doctor_id from booking b join public.user u on b.doctor_id = u.id where b.patient_id = "+ str(current_user.id)+" and b.status='COMPLETE'"
+    pastApt = db.engine.execute(queryStr2)
+    return render_template('patient/viewAppointments.html', name='patient' , currentBooking = currentApt,pastBooking = pastApt)
+
+@patientUtility.route('/provideFeedback/<string:bookingId>', methods=['POST'])
+@login_required
+def provideFeedback_post(bookingId : str):
+    if "post":
+        rating = request.form.get('rating')
+        feedback = request.form.get('feedback') 
+        doctorId = request.form.get('doctorId')
+        booking = Booking.query.filter_by(booking_id=bookingId).first()
+        doctor = Doctor.query.filter_by(id=doctorId).first()
+          
+        #oldCount = db.engine.execute("select count(*) from booking where feedback != '' and patient_id= "+ str(current_user.id)+" ;")
+        oldcount = 0
+        bookings = Booking.query.filter_by(patient_id=current_user.id)
+        for book in bookings:
+            if book.feedback!=None:
+                oldcount+=1
+
+        if doctor.rating == None:
+            doctor.rating = 0
+        new_doc_avg = ((int(doctor.rating) * oldcount) + int(rating))/(oldcount+1)
+
+        doctor.rating = new_doc_avg
+        booking.rating = rating
+        booking.feedback = feedback
+        db.session.commit()
+        return render_template('patient/viewAppointments.html')
+
 @patientUtility.route('/patient')
 @login_required
 def patient():
@@ -94,26 +140,83 @@ def patient():
 
 @patientUtility.route('/bookAppointment/')
 @login_required
-def book_appointment():
-    doctors = Doctor.query.all()
-    for doc in doctors:
-        print(doc.name)
-    return render_template('patient/bookAppointment.html', current_user=current_user, doctors_list = doctors)
- 
-@patientUtility.route('/bookAppointment/', methods=['POST'])
-@login_required
 def bookAppointment():
+    doctors = Doctor.query.all()
+    user_name = request.args.get('doctor_name')
+    doctorname = User.query.filter_by(first_name=user_name).first()
+    doctor_record = Doctor.query.filter_by(id=doctorname.id).first()
+    print(doctor_record.id)
+    available_slots = ['09:00 am - 09:30 am', '09:30 am - 10:00 am','10:00 am - 10:30 am','10:30 am - 11:00 am','11:00 am - 11:30 am',
+    '11:30 am - 12:00 pm','01:00 pm - 01:30 pm','01:30 pm - 02:00 pm','02:00 pm - 02:30 pm','02:30 pm - 03:00 pm','03:00 pm - 03:30 pm',
+    '03:30 pm - 04:00 pm']
+    return render_template('patient/bookAppointment.html',current_user=current_user,doctors_list = doctor_record.id,booked_slots = available_slots)
+ 
+@patientUtility.route('/bookAppointmentPost/', methods=['post'])
+@login_required
+def bookAppointmentPost():
     print('Hi')
+    
     userid = current_user.id
+    docNameFromHtml = request.form.get("doc_name")
+    print(docNameFromHtml)
+    covidTestResult = request.form.getlist("vehicle1")
+    patient = Patient.query.filter_by(id=userid).first()
+    if 'covidTest' in covidTestResult:
+        print('Bed')
+        if patient is not None:
+            patient.currentillness = 'Covid'
+        else:
+            newPatient = Patient(id=userid,currentillness='Covid')
+            db.session.add(newPatient)
+
+    
+    doctor_record = Doctor.query.filter_by(id=docNameFromHtml).first()
+
+    if patient is not None:
+        patient.price_package = patient.price_package - doctor_record.fees
+
     apt_date = request.form.get("Appointment_date")
-    doctor_name = request.form.get("doctor_name")
-    print(doctor_name)
-    print(apt_date)
-    doctor = Doctor.query.filter_by(name = doctor_name).first()
-    print(doctor.id)
-    bookings = Booking.query.filter_by(doctor_id = doctor.id,date = apt_date).first()
-    print(bookings)
-    return render_template('patient/bookAppointment.html',booked_slots = bookings)
+    slot_time = request.form.get("booked_slots")
+    
+    timeslot = slot_time.split('-')
+    starttime = timeslot[0]
+    endtime = timeslot[1]
+
+    starttimeTemp1 = starttime.split(' ')
+    starttimeTemp2 = starttimeTemp1[0].split(':')
+    finalStartTimeHourVal = starttimeTemp2[0]
+
+    endtimeTemp1 = endtime.split(' ')
+    endtimeTemp2 = endtimeTemp1[1].split(':')
+    finalEndTimeHourVal = endtimeTemp2[0]
+    print(endtimeTemp1)
+
+    if 'pm' in starttime and '12' not in starttime:
+        finalStartTimeHourVal = int(starttimeTemp2[0]) + 12
+        
+
+    if 'pm' in endtime and '12' not in endtime:
+        finalEndTimeHourVal = int(endtimeTemp2[0]) + 12
+        
+    dateTemp = apt_date.split('-')
+
+    startdatetimeVal = datetime(int(dateTemp[0]),int(dateTemp[1]),int(dateTemp[2]),int(finalStartTimeHourVal),int(starttimeTemp2[1]),0,0)
+    enddatetimeVal = datetime(int(dateTemp[0]),int(dateTemp[1]),int(dateTemp[2]),int(finalEndTimeHourVal),int(endtimeTemp2[1]),0,0)
+
+    existingBooking = Booking.query.filter_by(doctor_id = doctor_record.id)
+    for apt in existingBooking:
+        if apt.start_time==startdatetimeVal:
+            #flash('Not booked')
+            return render_template('patient/bookAppointment.html',msg="Error")
+
+    
+
+    apt = Booking(patient_id = userid,doctor_id= doctor_record.id,start_time=startdatetimeVal,end_time=enddatetimeVal,date=apt_date,status='OPEN')
+    db.session.add(apt)
+    db.session.commit()
+    return render_template('patient/bookAppointment.html',msg="Success")
+    #return redirect(url_for('patientUtility.patient'))
+
 
 @patientUtility.route('/insurancePackage',methods=['GET'])
 @login_required

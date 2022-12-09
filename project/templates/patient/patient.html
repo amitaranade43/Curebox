@@ -1503,10 +1503,7 @@ html{
                       <li class="rating">(35)</li>
                   </ul>
                   <a class="d-block" href="tel:+15143125678">+88 (185) 512-3834</a>
-
-                  <a href="{{ url_for('patientUtility.bookAppointment') }}">
-                    <button type="submit" name="button">Book Appointment</button>
-
+                  <a href="{{ url_for('patientUtility.bookAppointment', doctor_name=doctor[0]) }}">Book</a>
                   </a>
                 </div>
                 
