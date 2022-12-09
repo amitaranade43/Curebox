@@ -89,7 +89,6 @@ def updatepatient_post():
 def patient():
     print('Currently in patient')
     records = db.engine.execute("select d.fees , u.first_name,u.last_name from doctor d natural join public.user u ;")
-    print(records)
     print('After records')
     diseases = db.engine.execute("select name from disease;")
     locations = db.engine.execute("select distinct h.location from hospital h join doctor d on h.id = d.hospital_id order by 1")

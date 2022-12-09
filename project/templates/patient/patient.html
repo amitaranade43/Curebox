@@ -229,6 +229,17 @@
         -o-transition: all 0.4s ease;
         -ms-transition: all 0.4s ease;
         -webkit-transition: all 0.4s ease;
+        
+    }
+    button{
+      text-transform: uppercase;
+      width: fit-content;
+      display: block;
+      margin-left: auto;
+      background-color: #f3d655;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background .3s;
     }
     button:focus {
         outline: 0;
@@ -1079,6 +1090,17 @@ button.bg-danger:hover {
     gap:2rem;
 
 }
+.search-box .sigform_fld{
+	border: 1px solid #999999;
+	background: #fff;
+    width: 15%;
+    height: 20%;
+    margin-right: 5%;
+}
+.search-box .sigform_fld .label{
+    width: 15%;
+    height: 10%;
+}
 @media only screen and (max-width: 1399px) {
     
     .row.row-grid {
@@ -1413,37 +1435,44 @@ html{
 						</div>
                          
 						<!-- Search -->
-						<div class="search-box">
-							<form method="POST" action="/searchdoctor">
-                <b><text>Doctor </text></b>
-                    <input type="text" name="searchquery">
+						
+                        <div class = "container">
+                            <div class="search-container">
+                                <form method="POST" action="/searchdoctor">
+                                    <b><text>Doctor </text></b>
+                                        <input type="text" name="searchquery">
+    
+                                        <b><label for="disease">Diseases</label></b>
+                                        <select id ="disease" name="disease">
+                                        <option value="select"></option>
+                                        {% for disease in diseases %}  
+                                            <option value="{{ disease[0]}}">{{ disease[0] }}</option>
+                                            {% endfor %}       
+                                        </select>
+    
+                                        <b><label for="covid">Provide Covid Care</label></b>
+                                        <select id ="covid" name="covid">
+                                            <option value="select"></option>
+                                            <option value="YES">YES</option>
+                                            <option value="NO">NO</option>
+                                        </select>
+    
+                                        <b><label for="location">Location</label></b>
+                                        <select id ="location" name="location">
+                                        <option value="select"></option>
+                                        {% for location in locations %}  
+                                            <option value="{{ location[0] }}">{{ location[0] }}</option>
+                                            {% endfor %}       
+                                        </select>
+    
+                                        <button type="submit" class="btn btn-primary search-btn"><i class="fas fa-search"></i>
+                                </form>
 
-                    <b><label for="disease">Diseases</label></b>
-                    <select id ="disease" name="disease">
-                      <option value="select"></option>
-                      {% for disease in diseases %}  
-                        <option value="{{ disease[0]}}">{{ disease[0] }}</option>
-                        {% endfor %}       
-                    </select>
+                            </div>
 
-                    <b><label for="covid">Provide Covid Care</label></b>
-                    <select id ="covid" name="covid">
-                        <option value="select"></option>
-                        <option value="YES">YES</option>
-                        <option value="NO">NO</option>
-                    </select>
+                        </div>
 
-                    <b><label for="location">Location</label></b>
-                    <select id ="location" name="location">
-                      <option value="select"></option>
-                      {% for location in locations %}  
-                        <option value="{{ location[0] }}">{{ location[0] }}</option>
-                        {% endfor %}       
-                    </select>
-
-								<button type="submit" class="btn btn-primary search-btn"><i class="fas fa-search"></i>
-							</form>
-						</div>
+                        
 						
 					</div>
 				</div>
@@ -1456,7 +1485,7 @@ html{
 
             <div class="col-lg-6 profile-box">
               <div class="media d-flex">
-                <img style="width: 140px; height: 140px;" class ="mr-4" src="static/images/doc-1.jpg" alt="">
+                <img style="width: 160px; height: 200px;" class ="mr-4" src="static/images/doc-1.jpg" alt="">
                 <div class="media-body flex-grow-1">
                   
                   <h3>firstname  Lastname</h3>
@@ -1474,7 +1503,11 @@ html{
                       <li class="rating">(35)</li>
                   </ul>
                   <a class="d-block" href="tel:+15143125678">+88 (185) 512-3834</a>
-                  <h5>Book</h5>
+
+                  <a href="{{ url_for('patientUtility.bookAppointment') }}">
+                    <button type="submit" name="button">Book Appointment</button>
+
+                  </a>
                 </div>
                 
           </div>
