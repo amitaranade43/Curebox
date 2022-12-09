@@ -10,7 +10,17 @@ insuranceProviderUtility = Blueprint('insuranceProviderUtility', __name__)
 @login_required
 def insuranceProvider():
     records = InsuranceProvider.query.all()
-    return render_template('insuranceProvider/insuranceProviders.html', name = "insuranceProvider", packages = records )
+    print(records,len(records))
+    if len(records)!=0:
+        no_of_packages = len(records)
+        for i in records:
+            revenue_gen = i.revenue
+            count = i.people_enrolled
+    else:
+        revenue_gen=0
+        count=0
+        no_of_packages=0
+    return render_template('insuranceProvider/insuranceProviders.html', name = "insuranceProvider", packages = records,no_of_packages=no_of_packages,no_of_patients=count,Revenue_gen=revenue_gen)
 
 @insuranceProviderUtility.route('/createInsurancePackage')
 @login_required
@@ -30,31 +40,34 @@ def createInsurancePackage_post():
     Insurance_details = InsuranceProvider(package_name=p_name,package_description=p_description,insurance_duration=i_duration,age=a,price=pr)
     db.session.add(Insurance_details)
     db.session.commit()
-    records_create = InsuranceProvider.query.all()
     return render_template('insuranceProvider/insuranceProviders.html', current_user=current_user, name = "insuranceProvider", packages = records_create)
 
-@insuranceProviderUtility.route('/suggestInsurance/<string:token>', methods=['get'])
+@insuranceProviderUtility.route('/suggestInsurance/<string:token>/<string:insurance_id>', methods=['get'])
 @login_required
-def suggestInsurance(token):
+def suggestInsurance(token,insurance_id):
     low = int(token.split('-')[0])
     high = int(token.split('-')[1])
     print(type(low),high)
     str_cmd = "select * from patient where cast(age as int) between "+str(low)+" and "+str(high)+";"
     records_suggest = db.engine.execute(str_cmd).fetchall()
-    print(records_suggest)
     print("names which are suggested",records_suggest)
+    insurance_details= InsuranceProvider.query.filter_by(id=insurance_id).first()
     if records_suggest:
-        return render_template('insuranceProvider/suggestInsurance.html', current_user=current_user, name = "insuranceProvider", suggestedNames = records_suggest)
+        return render_template('insuranceProvider/suggestInsurance.html', current_user=current_user, name = "insuranceProvider", suggestedNames = records_suggest,insurance_id=insurance_details.id)
     else:
         flash('No Patient in the age range')
         return redirect(url_for('insuranceProviderUtility.insuranceProvider'))
 
-@insuranceProviderUtility.route('/suggestInsurancePatient/<string:token>/<string:isurancePack>', methods=['get'])
+@insuranceProviderUtility.route('/suggestInsurancePatient/<string:token>/<string:insurance_id>', methods=['get'])
 @login_required
-def suggestInsurancePatient(token,isurancePack):
+def suggestInsurancePatient(token,insurance_id):
     print(token)
-    insur_id = isurancePack
+    insur_id = insurance_id
     update_details = Patient.query.filter_by(id = token).first()
     update_details.insurance_package = insur_id
     db.session.commit()
     return render_template('insuranceProvider/suggestInsurancePatient.html', current_user=current_user, name = "insuranceProvider")
+
+
+
+

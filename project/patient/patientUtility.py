@@ -18,7 +18,8 @@ import os
 
 
 patientUtility = Blueprint('patientUtility', __name__)
-
+global amount
+amount = 0
 @patientUtility.route('/updatepatient')
 @login_required
 def updatepatient():
@@ -234,7 +235,7 @@ def InsurancePackage():
         if i != recom_records:
             existing_pack_list.append(i)
     print(details,existing_pack_list)
-    return render_template('patient/insurancePackage.html',recomRecords=recom_recordList,existingPack= existing_pack)
+    return render_template('patient/insurancePackage.html',recomRecords=recom_recordList,existingPack= existing_pack,current_user=current_user,name= 'patient')
 
 
 @patientUtility.route('/insurancePackageBuy/<string:token>/<string:insur_id>',methods=['GET'])
@@ -245,6 +246,15 @@ def InsurancePackageBuy(token,insur_id):
     print("details",update_details)
     print(type(token),type(update_details.price_package))
     update_details.price_package = int(token) + update_details.price_package
+    db.session.commit()
+    update_insurance = InsuranceProvider.query.filter_by(id=insur_id).first()
+    print("update_insurance",update_insurance)
+    if update_insurance.revenue and update_insurance.people_enrolled:
+        update_insurance.revenue = str(int(token) + int(update_insurance.revenue ))
+        update_insurance.people_enrolled = str(int(update_insurance.people_enrolled)+1)
+    else:
+        update_insurance.revenue = token
+        update_insurance.people_enrolled = str(1)
     db.session.commit()
     flash('Payment successful, Insurance Pavkage added')
     return redirect(url_for('patientUtility.InsurancePackage'))

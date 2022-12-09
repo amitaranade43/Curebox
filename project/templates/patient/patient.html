@@ -1163,7 +1163,7 @@ button.bg-danger:hover {
         font-size: 0.875rem;
     }
     h1, .h1 {
-        font-size: 2rem;
+        font-size: 1rem;
     }
     h2, .h2 {
         font-size: 1.75rem;
@@ -1403,15 +1403,15 @@ html{
         <a href="#" class="logo"> <i class="fas fa-heartbeat"></i> CureBox </a>
     
         <nav class="navbar">
-          <a href="{{ url_for('main.index') }}" class="navbar-item">
-            Home
-          </a>
     
           {% if (current_user.is_authenticated  and name == 'patient') %}
+         <a href="{{ url_for('patientUtility.patient') }}" class="navbar-item">
+            Home
+         </a>
           <a href="{{ url_for('patientUtility.updatepatient') }}" class="navbar-item">
               Profile
           </a>
-          <a href="{{ url_for('insuranceProviderUtility.insuranceProvider') }}" class="navbar-item">
+          <a href="{{ url_for('patientUtility.InsurancePackage') }}" class="navbar-item">
               Insurance Packages
           </a>
           <a href="{{ url_for('patientUtility.bookAppointment') }}" class="navbar-item">
@@ -1430,8 +1430,8 @@ html{
 				<div class="container-fluid">
 					<div class="banner-wrapper">
 						<div class="banner-header text-center">
-							<h1>Search Doctor, Make an Appointment</h1>
-							<p>Discover the best doctors, clinic & hospital the city nearest to you.</p>
+							<h1>Search and book your appointment</h1>
+							<p>Discover best doctors, clinics and hospitals near you </p>
 						</div>
                          
 						<!-- Search -->
