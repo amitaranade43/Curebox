@@ -174,7 +174,8 @@ def bookAppointmentPost():
     doctor_record = Doctor.query.filter_by(id=docNameFromHtml).first()
 
     if patient is not None:
-        patient.price_package = patient.price_package - doctor_record.fees
+        if patient.price_package is not None:
+            patient.price_package = patient.price_package - doctor_record.fees
 
     apt_date = request.form.get("Appointment_date")
     slot_time = request.form.get("booked_slots")
