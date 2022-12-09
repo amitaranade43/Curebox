@@ -1,0 +1,79 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<h1 class="title">
+    Appointment Details
+</h1>
+<div class="box">
+<form method="POST" action="{{ url_for('doctorUtility.markAsCompleteAppointment',patientId = {{ patient.id }}, _external=True)}}", enctype="multipart/form-data">        
+            <div class="container rounded bg-white mt-5 mb-5">
+
+                <div class="row">
+                    <div class="col-md-5 border-right">
+                            <div class="field">
+                                <div class="control">
+                                   <b><label for="fname">First Name : </label></b>
+                                    <text> {{patient.firstname}} </text>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="control">
+                                    <b><label for="lname">Last Name : </label></b>
+                                    <text> {{patient.lastname}} </text>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="control">
+                                   <b><label for="lname">Age : </label></b>
+                                        <text> {{patient.age}} </text>
+                                </div>
+                            </div>
+
+
+
+                            <div class="field">
+                                <div class="control">
+                                   <b><label for="age">Gender : </label></b>
+                                    <text> {{patient.gender}} </text>
+                                </div>
+                            </div>
+
+
+                            <div class="field">
+                                <div class="control">
+                                   <b><label for="weight">Weight : </label></b>
+                                    <text> {{patient.weight}} </text>
+                                </div>
+                            </div>
+
+
+
+                            <div class="field">
+                                <div class="control">
+                                   <b><label for="height">Height : </label></b>
+                                    <text> {{patient.height}} </text>
+                                </div>
+                            </div>
+
+
+                            <div class="field">
+                                <div class="control">
+                                    <b><label for="Illness">Current Illness : </label></b>
+                                    <text> {{patient.currentillness}} </text>      
+                                </div>
+                            </div>
+
+                           
+                            <button class="button is-block is-info is-large is-fullwidth">Mark As Complete</button>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            </div>
+            </div>
+    </form>
+</div>
+{% endblock %}

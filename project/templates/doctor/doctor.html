@@ -5,4 +5,41 @@
 <h1 class="title">
   Welcome, Doctor {{ name }}
 </h1>
+
+<div class="container">
+  <div >
+    <div>
+       <div class="container">
+       <h1><b>Your Appointments : </b></h1>
+       <div class="row has-text-centered">
+         <div class="col-8">
+           <table class="styled-table"> 
+             <thead> 
+             <tr> 
+                 <th>Patient Name</th>
+                 <th>Date</th>
+                 <th>Start Time</th>
+                 <th>End Time</th>
+                 <th>View Patient</th>
+             </tr> 
+             </thead> 
+             <tbody> 
+                 {% for appointment in appointments %}  
+                     <tr> 
+                         <td>{{ appointment[0] }} {{ appointment[1] }}</td> &nbsp;
+                         <td>{{ appointment[2] }}</td> &nbsp;
+                         <td>{{ appointment[3] }}</td> &nbsp;
+                         <td>{{ appointment[4] }}</td> &nbsp;
+                         <td><a href="{{ url_for('doctorUtility.completeAppointment', patientId=appointment[5], _external=True) }}">View Patient Appointment</a></td>  
+                     </tr> 
+                 {% endfor %} 
+             </tbody> 
+         </table> 
+           </div>
+       </div>
+       </div>       
+    </div>
+  </div>
+</div>
+
 {% endblock %}
