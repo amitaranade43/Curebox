@@ -14,7 +14,8 @@ def index():
 @doctorUtility.route('/doctor/')
 @login_required
 def doctor():
-    query = "select pt.firstname,pt.lastname,b.date,b.start_time,b.end_time,b.patient_id from booking b join patient pt on b.patient_id = pt.id where b.status='OPEN' order by b.start_time;"
+    doctor_id = str(current_user.id)
+    query = "select pt.firstname,pt.lastname,b.date,b.start_time,b.end_time,b.patient_id from booking b join patient pt on b.patient_id = pt.id where b.status='OPEN' and b.doctor_id = "+ doctor_id +" order by b.start_time;"
     records = db.engine.execute(query)
     return render_template('doctor/doctor.html', name=current_user.first_name ,appointments = records)
   
