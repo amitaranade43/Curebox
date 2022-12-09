@@ -35,7 +35,6 @@ def create_app():
 
     from project.models.User import User
     from project.main.routes import main
-    from project.error_handler.routes import handle_error_404, handle_error_500, handle_error_429
 
 
     @login_manager.user_loader
@@ -48,9 +47,6 @@ def create_app():
     app.register_blueprint(routes_blueprint)
     from project.models.User import User
     # blueprint for non-auth parts of app
-    app.register_error_handler(404, handle_error_404)
-    app.register_error_handler(500, handle_error_500)
-    app.register_error_handler(429, handle_error_429)
     app.register_blueprint(main)
 
     from project.doctor.doctorUtility import doctorUtility as doctorUtility_blueprint
