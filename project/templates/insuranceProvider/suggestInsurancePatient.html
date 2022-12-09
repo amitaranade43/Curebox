@@ -135,7 +135,7 @@
         display: none;
     }
 
-    .suggestions{
+    .success{
         display: flex;
         align-items: center;
         flex-wrap: wrap;
@@ -143,26 +143,26 @@
         padding-top: 10rem;
     }
 
-    .suggestions .image{
+    .success .image{
         flex:1 1 45rem;
     }
 
-    .suggestions .image img{
+    .success .image img{
         width: 100%;
     }
 
-    .suggestions .container{
+    .success .container{
         flex:1 1 45rem;
     }
 
-    .suggestions .container h3{
+    .success .container h3{
         font-size: 4.5rem;
         color:var(--black);
         line-height: 1.8;
         text-shadow: var(--text-shadow);
     }
 
-    .suggestions .content p{
+    .success .content p{
         font-size: 1.7rem;
         color:var(--light-color);
         line-height: 1.8;
@@ -219,40 +219,42 @@
         }
 
     }
-    .suggestions{
+    .success{
         display: flex;
         align-items: center;
         flex-wrap: wrap;
         gap:1.5rem;
         padding-top: 10rem;
+        font-size: 100rem;
+        vertical-align: middle;
     }
 
-    .suggestions .image{
+    .success .image{
         flex:1 1 45rem;
     }
 
-    .suggestions .image img{
+    .success .image img{
         width: 100%;
     }
 
-    .suggestions .container{
+    .success .container{
         flex:1 1 45rem;
     }
 
-    .suggestions .container h3{
+    .success .container h3{
         font-size: 10rem;
         color:var(--black);
         line-height: 1.8;
         text-shadow: var(--text-shadow);
     }
 
-    .suggestions .content p{
+    .success .content p{
         font-size: 100rem;
         color:var(--light-color);
         line-height: 1.8;
         padding: 1rem 0;
     }
-    .suggestions .content .row .col-8{
+    .success .content .row .col-8{
         font-size: 100rem;
         color:var(--light-color);
         line-height: 1.8;
@@ -287,7 +289,7 @@
           Profile
       </a>
       <a href="{{ url_for('insuranceProviderUtility.insuranceProvider') }}" class="navbar-item">
-          Insurance suggestions
+          Insurance success
       </a>
       <a href="{{ url_for('patientUtility.bookAppointment') }}" class="navbar-item">
           Book Appointment
@@ -331,17 +333,11 @@
     <div id="menu-btn" class="fas fa-bars"></div>
 
 </header>
-<section class="suggestions">
-  {% for record in suggestedNames%} 
-  <div class="container">
-    <div class="row">
-      <div class="col-8">
-        <strong> </strong>
-        {{ record[1]}} {{ record[2] }}<br/>
-        <form action="{{ url_for('insuranceProviderUtility.suggestInsurancePatient', token = record[0], isurancePack=current_user.id, _external=True)}}", method="get"> 
-            <button>Suggest this Patient</button>
-        </form>
-  {% endfor %} 
+<section class="success">
+    <h1>Successfully suggested the Patient</h1>
+    <a href="{{ url_for('insuranceProviderUtility.insuranceProvider') }}" class="navbar-item">
+        Back to Profile
+    </a>
 </section>
 </body> 
 </html>
