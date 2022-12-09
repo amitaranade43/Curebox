@@ -28,7 +28,7 @@
         text-transform: capitalize;
         transition: all .2s ease-out;
         text-decoration: none;
-        font-size: 1.5rem;
+        font-size: 1.75rem;
     }
 
     html{
@@ -135,7 +135,7 @@
         display: none;
     }
 
-    .suggestions{
+    .packages{
         display: flex;
         align-items: center;
         flex-wrap: wrap;
@@ -143,27 +143,38 @@
         padding-top: 10rem;
     }
 
-    .suggestions .image{
+    .packages .image{
         flex:1 1 45rem;
     }
 
-    .suggestions .image img{
+    .packages .image img{
         width: 100%;
     }
 
-    .suggestions .container{
+    .packages .container{
         flex:1 1 45rem;
     }
 
-    .suggestions .container h3{
-        font-size: 4.5rem;
-        color:var(--black);
-        line-height: 1.8;
-        text-shadow: var(--text-shadow);
+    .packages .container h1{
+        font-family: 'Poppins', sans-serif;
+        margin: 1px;; padding: 2px;
+        box-sizing: border-box;
+        outline: none; border: none;
+        text-transform: capitalize;
+        transition: all .2s ease-out;
+        text-decoration: None;
+        font-size: 2rem;
+        color: #777;
     }
 
-    .suggestions .content p{
-        font-size: 1.7rem;
+    .packages .content p{
+        font-size: 100rem;
+        color:var(--light-color);
+        line-height: 1.8;
+        padding: 1rem 0;
+    }
+    .packages .content .row .col-8{
+        font-size: 100rem;
         color:var(--light-color);
         line-height: 1.8;
         padding: 1rem 0;
@@ -219,45 +230,6 @@
         }
 
     }
-    .suggestions{
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap:1.5rem;
-        padding-top: 10rem;
-    }
-
-    .suggestions .image{
-        flex:1 1 45rem;
-    }
-
-    .suggestions .image img{
-        width: 100%;
-    }
-
-    .suggestions .container{
-        flex:1 1 45rem;
-    }
-
-    .suggestions .container h3{
-        font-size: 10rem;
-        color:var(--black);
-        line-height: 1.8;
-        text-shadow: var(--text-shadow);
-    }
-
-    .suggestions .content p{
-        font-size: 100rem;
-        color:var(--light-color);
-        line-height: 1.8;
-        padding: 1rem 0;
-    }
-    .suggestions .content .row .col-8{
-        font-size: 100rem;
-        color:var(--light-color);
-        line-height: 1.8;
-        padding: 1rem 0;
-    }
 
     @media (max-width:450px){
 
@@ -286,8 +258,8 @@
       <a href="{{ url_for('patientUtility.updatepatient') }}" class="navbar-item">
           Profile
       </a>
-      <a href="{{ url_for('insuranceProviderUtility.insuranceProvider') }}" class="navbar-item">
-          Insurance suggestions
+      <a href="{{ url_for('patientUtility.InsurancePackage') }}" class="navbar-item">
+          Insurance Packages
       </a>
       <a href="{{ url_for('patientUtility.bookAppointment') }}" class="navbar-item">
           Book Appointment
@@ -331,17 +303,61 @@
     <div id="menu-btn" class="fas fa-bars"></div>
 
 </header>
-<section class="suggestions">
-  {% for record in suggestedNames%} 
+<body>
+    {% with messages = get_flashed_messages() %}  
+    {% if messages %}  
+          {% for message in messages %}  
+                <p>{{ message }}</p>  
+          {% endfor %}  
+    {% endif %}  
+    {% endwith %}
+<section class="packages">
+  {% for record in recomRecords%}
   <div class="container">
     <div class="row">
       <div class="col-8">
-        <strong> </strong>
-        {{ record[1]}} {{ record[2] }}<br/>
-        <form action="{{ url_for('insuranceProviderUtility.suggestInsurancePatient', token = record[0], isurancePack=current_user.id, _external=True)}}", method="get"> 
-            <button>Suggest this Patient</button>
+        <h1>Recommended Packages by Insurance Providers:</h1>
+        <strong>Package Name:</strong>
+        {{ record.package_name }}<br/>
+  
+        <strong>Package Description</strong>
+        {{ record.package_description}}<br/>
+      
+        <strong>Insurnace Duration</strong>
+        {{ record.insurance_duration }}<br/>
+      
+        <strong>Package provided for ages between:</strong>
+        {{ record.age }}<br/>
+      
+        <strong>Price of the package in dollars</strong>
+        {{ record.price  }}<br/>
+        <form action="{{ url_for('patientUtility.InsurancePackageBuy',token = record.price, insur_id=record.id, _external=True)}}", method="get">  
+            <button> Buy this package </button>
         </form>
-  {% endfor %} 
+  {% endfor %}
+  <h1>Packages available for you</h1>
+  {% for record in existingPack%}
+  <div class="container">
+    <div class="row">
+      <div class="col-8">
+        <strong>Package Name:</strong>
+        {{ record.package_name }}<br/>
+  
+        <strong>Package Description</strong>
+        {{ record.package_description}}<br/>
+      
+        <strong>Insurnace Duration</strong>
+        {{ record.insurance_duration }}<br/>
+      
+        <strong>Package provided for ages between:</strong>
+        {{ record.age }}<br/>
+      
+        <strong>Price of the package in dollars</strong>
+        {{ record.price  }}<br/>
+        <form action="{{ url_for('patientUtility.InsurancePackageBuy',token = record.price, insur_id=record.id,_external=True)}}", method="get">  
+            <button> Buy this package </button>
+        </form>
+  {% endfor %}  
 </section>
-</body> 
+</body>
 </html>

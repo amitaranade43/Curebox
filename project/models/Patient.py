@@ -12,3 +12,5 @@ class Patient(db.Model):
     height = db.Column(db.String(255))
     currentillness = db.Column(db.String(255))
     profile_picture = db.Column(db.String(), nullable=True)
+    price_package = db.Column(db.Integer)
+    insurance_package = db.Column(db.Integer)

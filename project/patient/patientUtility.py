@@ -1,7 +1,7 @@
-from flask import Blueprint, redirect,render_template,request
+from flask import Blueprint, redirect,render_template,request,flash
 from flask_login import login_required, current_user
 from project import db
-from project.models import Patient
+from project.models import Patient, InsuranceProvider
 from flask import Blueprint, redirect,render_template,request, url_for, flash, send_file, current_app
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_required, current_user
@@ -55,7 +55,6 @@ def updatepatient_post():
             db.session.add(record)
             db.session.commit()
             saver.save(os.path.join(current_app.config['UPLOAD_FOLDER'],pic_name))
-            
         else:
             #code to update the data in database
             update_details = Patient.query.filter_by(email = value.email).first()
@@ -67,7 +66,6 @@ def updatepatient_post():
             update_details.height = str(request.form.get('height'))
             update_details.currentillness = request.form.get('illness')
             update_details.profile_picture = request.files.get('inputFile')
-
             saver = request.files.get('inputFile')
             profile_picname = secure_filename(update_details.profile_picture.filename)
             pic_name = str(uuid.uuid1()) + "_" + profile_picname
@@ -100,7 +98,7 @@ def book_appointment():
     doctors = Doctor.query.all()
     for doc in doctors:
         print(doc.name)
-    return render_template('patient/bookAppointment.html',current_user=current_user,doctors_list = doctors)
+    return render_template('patient/bookAppointment.html', current_user=current_user, doctors_list = doctors)
  
 @patientUtility.route('/bookAppointment/', methods=['POST'])
 @login_required
@@ -116,3 +114,34 @@ def bookAppointment():
     bookings = Booking.query.filter_by(doctor_id = doctor.id,date = apt_date).first()
     print(bookings)
     return render_template('patient/bookAppointment.html',booked_slots = bookings)
+
+@patientUtility.route('/insurancePackage',methods=['GET'])
+@login_required
+def InsurancePackage():
+    record = 'select * from patient where id = 2'
+    details = Patient.query.filter_by(id=current_user.id).first()
+    isuranceID = details.insurance_package
+    recom_records = InsuranceProvider.query.filter_by(id=isuranceID).first()
+    recom_recordList= []
+    recom_recordList.append(recom_records)
+    existing_pack = InsuranceProvider.query.all()
+    existing_pack_list =[]
+    for i in existing_pack:
+        print("before the if",i,existing_pack,recom_records)
+        if i != recom_records:
+            existing_pack_list.append(i)
+    print(details,existing_pack_list)
+    return render_template('patient/insurancePackage.html',recomRecords=recom_recordList,existingPack= existing_pack)
+
+
+@patientUtility.route('/insurancePackageBuy/<string:token>/<string:insur_id>',methods=['GET'])
+@login_required
+def InsurancePackageBuy(token,insur_id):
+    print("price",token,"id",insur_id)
+    update_details = Patient.query.filter_by(id = current_user.id).first()
+    print("details",update_details)
+    print(type(token),type(update_details.price_package))
+    update_details.price_package = int(token) + update_details.price_package
+    db.session.commit()
+    flash('Payment successful, Insurance Pavkage added')
+    return redirect(url_for('patientUtility.InsurancePackage'))
