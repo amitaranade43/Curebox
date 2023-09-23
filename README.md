@@ -21,6 +21,7 @@ User can create a new insurance package using create button:
 ### 2)Patient login-
 
 Patient user can search any doctor using doctor name , disease, based on whether doctor provides covid care and location:
+
 ![image](https://github.com/amitaranade43/Curebox/assets/34507621/3c7df1e8-c4d5-4280-b9a2-90753ae1da8f)
 
 Once a doctor is selected , patient can book appointment using Book button. A page with all time slots will be displayed and user must select a time slot to book. Patient can also see doctor’s ratings and view doctor’s details using ‘View Doctor’ button:
